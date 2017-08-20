@@ -57,16 +57,14 @@ jQuery(document).ready(function() {
     //console.log("display reporter "+data.hubnetMessageTag+" "+data.hubnetMessage);
     if (data.hubnetMessageTag === "canvas") {
       if ($("#image-"+data.hubnetMessageSource).length === 0) {
-        var canvasImg = new Image();
-        canvasImg.id = "image-" + data.hubnetMessageSource;
-        canvasImg.src = data.hubnetMessage;
-        canvasImg.userId = data.hubnetMessageSource;
-        canvasImg.onclick = function() {
-          socket.emit("request user data", {userId: canvasImg.userId});
-        };
-        $(".netlogo-gallery").append(canvasImg);
+        Gallery.createCanvas({ id : "image-" + data.hubnetMessageSource,
+                src : data.hubnetMessage,
+                userId : data.hubnetMessageSource,
+                onclick : function() {
+                  socket.emit("request user data", {userId: canvasImg.userId}); } } );
       } else {
-        $("#image-"+data.hubnetMessageSource).attr("src", data.hubnetMessage);
+        Gallery.updateCanvas({ id: "#image-"+data.hubnetMessageSource, 
+                src: data.hubnetMessage })
       }
     } else {
       var matchingMonitors = session.widgetController.widgets().filter(function(x) { 
