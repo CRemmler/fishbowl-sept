@@ -61,8 +61,8 @@ Interface = (function() {
       });
     }
     if (activityType === "hubnet") {
-      $(".netlogo-gallery").prev().remove();
-      $(".netlogo-gallery").remove();
+      //$(".netlogo-gallery").prev().remove();
+      //$(".netlogo-gallery").remove();
     } else {
       $(".hubnetOnly").css("display","none");
     }
@@ -70,7 +70,8 @@ Interface = (function() {
 
   function displayTeacherInterface(room, components) {
     showItems(components.componentRange[0], components.componentRange[1]);
-    if (activityType === "gbcc") { $(".netlogo-export-wrapper").css("display","block"); $(".exporthtml").css("display","none")} 
+    //if (activityType === "gbcc") { $(".netlogo-export-wrapper").css("display","block"); $(".exporthtml").css("display","none")} 
+    $(".netlogo-export-wrapper").css("display","block");
     $(".roomNameInput").val(room);
     $("#netlogo-title").append(" Room: "+room);
     $(".netlogo-view-container").removeClass("hidden");

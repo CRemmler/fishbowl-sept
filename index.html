@@ -334,18 +334,6 @@ div.CodeMirror-dragcursors {
   }
 }
 
-.netlogo-gallery img {
-  // in Gallery tab, a row can have 7 images at 122px, 6 at 146px and 5 at 179px
-  width: 173px;
-  height: 173px;
-  margin: 8px;
-  cursor: pointer;
-  border:5px solid white;
-}
-
-.netlogo-gallery img:hover {
-  border:5px solid #85F397;
-}
 
 /* See issue #2901 */
 .cm-tab-wrap-hack:after { content: ''; }
@@ -814,13 +802,6 @@ img.link-img {
   height: 500px;
 }
 
-.netlogo-gallery {
-  -ms-flex: 1;
-      flex: 1;
-  margin-top: 0;
-  padding-top: 10px;
-  padding: 15px;
-}
 
 .netlogo-toggle-edit-mode {
   display: block;
@@ -1658,49 +1639,20 @@ img.link-img {
     </div>
 </div>
 
-    <canvas id="miniCanvas" width="500" height="500" style="display:none"></canvas>
-    <canvas id="miniSafariCanvas" width="200" height="200" style="display:none"></canvas>
-    <div id="netlogo-model-container" style="display: inline-block; padding:0px"></div>
-    <script type="text/javascript" src="js/tortoiseCompiler.js"></script>
-    <script type="text/javascript" src="js/jquery.min.js"></script>
-  	<script type="text/javascript" src="js/client.js"></script>
-  	<script type="text/javascript" src="js/interface.js"></script>
-  	<script src="/socket.io/socket.io.js"></script>
+  <!-- GBCC -->
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <canvas id="miniCanvas" width="500" height="500" style="display:none"></canvas>
+  <canvas id="miniSafariCanvas" width="200" height="200" style="display:none"></canvas>
+  <div id="netlogo-model-container" style="display: inline-block; padding:0px"></div>
+  <script type="text/javascript" src="js/tortoiseCompiler.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/client.js"></script>
+	<script type="text/javascript" src="js/interface.js"></script>
+	<script type="text/javascript" src="js/events.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
     
-    <script> // GbCC Settings for interface
-      jQuery(document).ready(function() {
-        // highlight all output areas on click
-        $(".netlogo-output").click(function() { 
-          var sel, range;
-          var el = $(this)[0];
-          if (window.getSelection && document.createRange) { //Browser compatibility
-            sel = window.getSelection();
-            if(sel.toString() == ''){ //no text selection
-               window.setTimeout(function(){
-                  range = document.createRange(); //range object
-                  range.selectNodeContents(el); //sets Range
-                  sel.removeAllRanges(); //remove all ranges from selection
-                  sel.addRange(range);//add Range to a Selection.
-              },1);
-            }
-          }else if (document.selection) { //older ie
-              sel = document.selection.createRange();
-              if(sel.text == ''){ //no text selection
-                  range = document.body.createTextRange();//Creates TextRange object
-                  range.moveToElementText(el);//sets Range
-                  range.select(); //make selection.
-              }
-          }
-        });
-        // add show/hide client view
-        $(".netlogo-view-container").append("<span class='teacherOnly hubnetOnly' style='float:right'><input id='shareClientView' checked type='checkbox'>Share</span>");
-        $(".netlogo-view-container").css("width", $(".netlogo-view-container canvas").css("width"));
-        $("#shareClientView").click(function() {
-          ($(this).prop("checked")) ? socket.emit('display view', {'display':true}) : socket.emit('display view', {'display':false});
-        });
-      });
-    </script>
-    
+  <!-- END GBCC -->
+
     <script>/*eslint-disable no-unused-vars*/
 /*!
  * jQuery JavaScript Library v3.1.0
@@ -54316,7 +54268,7 @@ into the sorting code and caused a 25% performance hit in BZ Benchmark. --JAB (4
   });
 
 }).call(this);
-//# sourceMappingURL=info.js.map
+//# sourceMappingURL=gallery.js.map
 </script>
 
 
@@ -58042,11 +57994,15 @@ into the sorting code and caused a 25% performance hit in BZ Benchmark. --JAB (4
       updates = Array.isArray(modelUpdate) ? modelUpdate : [modelUpdate];
       for (k = 0, len = updates.length; k < len; k++) {
         u = updates[k];
+        
+        <!-- GBCC -->
         if (socket && activityType === "hubnet") {
           socket.emit("update", {turtles: modelUpdate[k].turtles}); 
           socket.emit("update", {patches: modelUpdate[k].patches});
         }
         universe = this;
+        <!-- END GBCC -->
+        
         this.applyUpdate(u);
       }
       return this.repaint();
@@ -58271,12 +58227,6 @@ into the sorting code and caused a 25% performance hit in BZ Benchmark. --JAB (4
       } else {
         this.centerX = this.worldCenterX;
         this.centerY = this.worldCenterY;
-        
-        // REMMLER
-        //$("body").append("<img id='caterpillar' src='temp.png'>");
-        //var img = img=document.getElementById("caterpillar");
-        // this.visibleCtx.drawImage(img,10,10);
-        // END REMMLER
         
         return this.visibleCtx.drawImage(this.canvas, 0, 0);
       }
@@ -60195,6 +60145,10 @@ _nS('controllers.Local'); _root['controllers']['Local']['standalone'] =
 
 document.title = 'Widgets-Hubnet.nlogo';
 </script>
+
+
+
+
 <script type='text/nlogo' id='nlogo-code' data-filename='Widgets-Hubnet.nlogo'>
 
 
@@ -60249,7 +60203,9 @@ to execute-command [ tag message ]
   show word "get " word tag word " " message
 end
 
+to import-image
 
+end
 
 
 to client-procedure
@@ -60417,6 +60373,23 @@ TEXTBOX
 Step 1: Push the \"listen-students\" forever button.\nStep 2: Open the Command Center.\nStep 3: Watch for messages sent from students.\nStep 4: Press the \"share-with-students\" button, and the teacher values will overwrite the student values.
 11
 0.0
+1
+
+BUTTON
+610
+88
+728
+121
+upload-image
+upload-image
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
 1
 
 BUTTON
