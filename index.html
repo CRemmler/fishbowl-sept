@@ -60132,61 +60132,19 @@ document.title = 'Widgets-Hubnet.nlogo';
 
 
 
-<script type='text/nlogo' id='nlogo-code' data-filename='Widgets-Hubnet.nlogo'>
+<script type='text/nlogo' id='nlogo-code' data-filename='fishbowl.nlogo'>to setup
 
-
-globals [
-  snake
-  my-user-id
-]
-
-turtles-own [
-   user-id
-]
-
-to startup
-  ;hubnet-reset
 end
 
-to share-with-students
-  show word "send woof " dog
-  hubnet-send my-user-id "woof" dog
-  show word "send oink " pig
-  hubnet-send my-user-id "oink" pig
-  show word "send neigh " horse
-  hubnet-send my-user-id "neigh" horse
-  show word "send moo " cow
-  hubnet-send my-user-id "moo" cow
-  show word "send sssss " snake
-  hubnet-send my-user-id "sssss" snake
+to go
+
 end
 
-to listen-students
-  while [ hubnet-message-waiting? ]
-  [
-    hubnet-fetch-message
-    ifelse hubnet-enter-message?
-    [
+to share-view
 
-      set my-user-id hubnet-message-source
-      create-turtles 1 [ set user-id hubnet-message-source  ]
-    ]
-    [ ifelse hubnet-exit-message?
-      [ ask turtles with [ user-id = hubnet-message-source ] [ die ]
-      ]
-      [ ask turtles with [ user-id = hubnet-message-source ]
-         [ execute-command hubnet-message-tag hubnet-message ]
-      ]
-     ]
-   ]
 end
 
-
-to execute-command [ tag message ]
-  show word "get " word tag word " " message
-end
-
-to upload-image
+to share-code
 
 end
 
@@ -60195,13 +60153,13 @@ to client-procedure
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
-255
-130
-728
-593
+210
+10
+647
+448
 -1
 -1
-14.1
+13.0
 1
 10
 1
@@ -60215,20 +60173,20 @@ GRAPHICS-WINDOW
 16
 -16
 16
-1
-1
+0
+0
 1
 ticks
 30.0
 
 BUTTON
-36
-44
-208
-77
-NIL
-share-with-students
-NIL
+134
+74
+203
+107
+go
+go
+T
 1
 T
 OBSERVER
@@ -60238,133 +60196,24 @@ NIL
 NIL
 1
 
-SLIDER
-36
-86
-208
-119
-dog
-dog
-0
+INPUTBOX
+4
+116
+203
+274
+my-code
+NIL
+1
+1
+String
+
+BUTTON
 5
-4.0
-1
-1
-NIL
-HORIZONTAL
-
-SWITCH
-36
-128
-207
-161
-pig
-pig
-1
-1
--1000
-
-CHOOSER
-36
-170
-207
-215
-horse
-horse
-"a" 1 [2 3] true
-2
-
-INPUTBOX
-36
-225
-206
-285
-cow
-NIL
-1
-0
-String
-
-MONITOR
-36
-295
-204
-340
-NIL
-snake
-17
-1
-11
-
-OUTPUT
-32
-505
-198
-555
-13
-
-TEXTBOX
-79
-18
-182
-36
-teacher-interface
-11
-0.0
-1
-
-BUTTON
-33
-563
-198
-596
-listen-students
-listen-students
-T
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
-
-PLOT
-19
-348
-219
-498
-plot 1
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-"default" 1.0 0 -16777216 true "" "plot count turtles"
-
-TEXTBOX
-260
-17
-714
-115
-Step 1: Push the \"listen-students\" forever button.\nStep 2: Open the Command Center.\nStep 3: Watch for messages sent from students.\nStep 4: Press the \"share-with-students\" button, and the teacher values will overwrite the student values.
-11
-0.0
-1
-
-BUTTON
-610
-88
-728
-121
-upload-image
-upload-image
+75
+71
+108
+setup
+setup
 NIL
 1
 T
@@ -60376,12 +60225,12 @@ NIL
 1
 
 BUTTON
-39
-49
-178
-82
-meow
-client-procedure
+546
+456
+646
+489
+share-view
+share-view
 NIL
 1
 T
@@ -60390,110 +60239,24 @@ NIL
 NIL
 NIL
 NIL
-50
-
-
-SLIDER
-40
-90
-177
-123
-woof
-woof
-0.0
-5.0
-0
-1.0
 1
-NIL
-HORIZONTAL
 
-
-SWITCH
-40
-131
-177
-164
-oink
-oink
-1
-1
--1000
-
-
-CHOOSER
-39
-171
-177
-216
-neigh
-neigh
-"a" 1 [2 3] true
-0
-
-
-INPUTBOX
-39
-224
-179
-284
-moo
+BUTTON
+99
+280
+202
+313
+share-code
+share-code
 NIL
 1
-0
-String
-
-
-MONITOR
-39
-293
-179
-342
-sssss
-""
-0
-1
-11
-
-TEXTBOX
-67
-20
-217
-38
-student interface
-11
-0.0
-1
-
-
-PLOT
-10
-359
-210
-509
-plot 2
+T
+OBSERVER
 NIL
 NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-
-
-TEXTBOX
-238
-18
-642
-130
-Step 1: Push the button,\nStep 2: Select the slider, switcher and chooser. \nStep 3: Add text to the input box. \nStep 4: Click on the View.\nStep 5: If the teacher has the \"listen-students\" forever button running, then widget click data will appear in the teacher's Command Center.\nStep 6: If the teacher presses \"share-with-students\", the teacher values will overtake the student values. (Note: this does not work for all widgets.)
-11
-0.0
+NIL
+NIL
 1
-
 
 @#$#@#$#@
 ## WHAT IS IT?
@@ -60837,163 +60600,11 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0
+NetLogo 6.0.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
-VIEW
-236
-143
-488
-386
-0
-0
-0
-1
-1
-1
-1
-1
-0
-1
-1
-1
--16
-16
--16
-16
-
-VIEW
-237
-395
-487
-583
-0
-0
-0
-1
-1
-1
-1
-1
-0
-1
-1
-1
--16
-16
--16
-16
-
-BUTTON
-39
-49
-178
-82
-meow
-NIL
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-
-SLIDER
-40
-90
-177
-123
-woof
-woof
-0.0
-5.0
-0
-1.0
-1
-NIL
-HORIZONTAL
-
-SWITCH
-40
-131
-177
-164
-oink
-oink
-1
-1
--1000
-
-CHOOSER
-39
-171
-177
-216
-neigh
-neigh
-\"a\" 1 [2 3] true
-0
-
-INPUTBOX
-39
-224
-179
-284
-moo
-NIL
-1
-0
-String
-
-MONITOR
-39
-293
-179
-342
-sssss
-NIL
-3
-1
-
-TEXTBOX
-67
-20
-217
-38
-student interface
-11
-0.0
-1
-
-PLOT
-10
-359
-210
-509
-plot 2
-NIL
-NIL
-0.0
-10.0
-0.0
-10.0
-true
-false
-"" ""
-PENS
-
-TEXTBOX
-238
-18
-642
-130
-Step 1: Push the button,\nStep 2: Select the slider, switcher and chooser. \nStep 3: Add text to the input box. \nStep 4: Click on the View.\nStep 5: If the teacher has the \"listen-students\" forever button running, then widget click data will appear in the teacher's Command Center.\nStep 6: If the teacher presses \"share-with-students\", the teacher values will overtake the student values. (Note: this does not work for all widgets.)
-11
-0.0
-1
-
 @#$#@#$#@
 default
 0.0
@@ -61011,7 +60622,6 @@ Line -7500403 true 150 150 210 180
 
 
 </script>
-
 
     <script>
 

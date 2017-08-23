@@ -53,4 +53,3 @@ module.exports = {
     sendResponse(createReport(data, fileName), zip, res, fileName);
   }
 };
-

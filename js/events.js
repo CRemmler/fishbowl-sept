@@ -48,5 +48,4 @@ jQuery(document).ready(function() {
   "<div class='netlogo-gallery-tab-content'></div>"
   $(".netlogo-tab-area label:nth-child(2)").after(galleryTabString);
   
-   
 });

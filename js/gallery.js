@@ -16,7 +16,6 @@ Gallery = (function() {
     $(data.id).attr("src", data.src);
   }
     
-    
   return {
     createCanvas: createCanvas,
     updateCanvas: updateCanvas
