@@ -25,7 +25,10 @@ jQuery(document).ready(function() {
   });
   
   // add show/hide client view
-  $(".netlogo-view-container").append("<span class='teacherOnly hubnetOnly' style='float:right'><input id='shareClientView' checked type='checkbox'>Share</span>");
+  //$(".netlogo-view-container").append("<span class='teacherOnly hubnetOnly' style='float:right'><input id='shareClientView' checked type='checkbox'>Share</span>");
+  $(".netlogo-view-container").append("<span class='teacherOnly' style='float:right'><input id='shareGallery' checked type='checkbox'>Enable Gallery<input id='shareClientView' checked type='checkbox'>Share</span>");
+  //$(".netlogo-view-container").append("<span class='studentOnly' style='float:right'><input id='myView' checked type='radio'>My View<input id='ourView' checked type='radio'>Our View</span>");
+  
   $(".netlogo-view-container").css("width", $(".netlogo-view-container canvas").css("width"));
   $("#shareClientView").click(function() {
     ($(this).prop("checked")) ? socket.emit('display view', {'display':true}) : socket.emit('display view', {'display':false});

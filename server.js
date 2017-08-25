@@ -72,6 +72,8 @@ io.on('connection', function(socket){
 			myUserId = socket.id;
 			roomData[myRoom].userData[myUserId] = {};
 			roomData[myRoom].userData[myUserId].exists = true;
+      console.log(myUserId);
+      if (activityType != "hubnet") { socket.emit("gbcc user enters", {userId: myUserId})}
 			// send settings to client
 			socket.emit("save settings", {userType: myUserType, userId: myUserId});
 			// join myRoom
@@ -260,6 +262,7 @@ io.on('connection', function(socket){
 		if (roomData[myRoom] != undefined && roomData[myRoom].userData[myUserId] != undefined) {
 			roomData[myRoom].userData[myUserId].exists = false;
 		}
+    if (activityType != "hubnet") { socket.emit("gbcc user exits", {userId: myUserId})}
 		if (socket.myUserType === "teacher") {
 			if (activityType === "hubnet") {
 				clearRoom(myRoom);

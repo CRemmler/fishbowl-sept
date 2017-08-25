@@ -36,6 +36,15 @@ jQuery(document).ready(function() {
     }
   });
 
+  socket.on("gbcc user enters", function(data) {
+    console.log("gbcc user enters",data);
+    session.run('gbcc-on-user-enters "'+data.userId+'"');
+  });
+  
+  socket.on("gbcc user exits", function(data) {
+    session.run('gbcc-on-user-exits ["'+data.userId+'"]');
+  });
+
   // display admin interface
   socket.on("display admin", function(data) {
     Interface.showAdmin(data.roomData);
@@ -59,9 +68,11 @@ jQuery(document).ready(function() {
       if ($("#image-"+data.hubnetMessageSource).length === 0) {
         Gallery.createCanvas({ id : "image-" + data.hubnetMessageSource,
                 src : data.hubnetMessage,
-                userId : data.hubnetMessageSource,
-                onclick : function() {
-                  socket.emit("request user data", {userId: canvasImg.userId}); } } );
+                userId : data.hubnetMessageSource
+                //,
+                //onclick : function() {
+                //  socket.emit("request user data", {userId: canvasImg.userId}); } 
+              } );
       } else {
         Gallery.updateCanvas({ id: "#image-"+data.hubnetMessageSource, 
                 src: data.hubnetMessage })
@@ -92,7 +103,7 @@ jQuery(document).ready(function() {
   // AND You should not call gbcc-get-from-user from outside of the click handler
   socket.on("accept user data", function(data) {
     userData = data.userData;
-    world.hubnetManager.gbccRunCode('gbcc-gallery-click "'+data.userId+'"');
+    session.run('gbcc-on-gallery-button-click "'+data.userId+'"');
   });
 
   socket.on("execute command", function(data) {
