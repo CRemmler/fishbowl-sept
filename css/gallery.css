@@ -7,10 +7,6 @@
   border:5px solid white;
 }
 
-.gbcc-gallery img:hover {
-  border:5px solid #85F397;
-}
-
 .gbcc-gallery {
   -ms-flex: 1;
       flex: 1;
@@ -19,4 +15,20 @@
   padding-top: 10px;
   padding: 15px;
   border-bottom:0px;
+}
+
+.gbcc-gallery img:hover {
+  border:5px solid white;
+}
+
+.gbcc-gallery img:not(.selected,:hover) {
+  border:5px solid white;
+}
+
+.gbcc-gallery img.selected {
+  border:5px solid yellow;
+}
+
+.gbcc-gallery img.lastSelected {
+  border:5px solid yellow;
 }

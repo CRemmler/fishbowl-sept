@@ -9,12 +9,15 @@ jQuery(document).ready(function() {
   var userId;
   var userType;
   var turtleDict = {};
+  var allowMultipleButtonsSelected = false;
   socket = io();
 
   // save student settings
   socket.on("save settings", function(data) {
     userId = data.userId;
     userType = data.userType;
+    Gallery.setupGallery(data.gallerySettings);
+    allowMultipleButtonsSelected = data.gallerySettings.allowMultipleButtonsSelected; 
   });
 
   // display teacher or student interface
@@ -103,7 +106,15 @@ jQuery(document).ready(function() {
   // AND You should not call gbcc-get-from-user from outside of the click handler
   socket.on("accept user data", function(data) {
     userData = data.userData;
-    session.run('gbcc-on-gallery-button-click "'+data.userId+'"');
+    if (allowMultipleButtonsSelected) {
+      if ($("#image-"+data.userId).hasClass("selected")) {
+        session.run('gbcc-on-gallery-button-toggle-on "'+data.userId+'"');        
+      } else {
+        session.run('gbcc-on-gallery-button-toggle-off "'+data.userId+'"');        
+      }
+    } else {
+      session.run('gbcc-on-gallery-button-click "'+data.userId+'"');
+    }
   });
 
   socket.on("execute command", function(data) {

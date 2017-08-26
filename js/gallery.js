@@ -7,13 +7,44 @@ Gallery = (function() {
   var is_opera = navigator.userAgent.toLowerCase().indexOf("op") > -1;
   if ((is_chrome)&&(is_safari)) { is_safari = false; }
   if ((is_chrome)&&(is_opera)) { is_chrome = false; }
+  var allowMultipleButtonsSelected = false;
+  
+  function setupGallery(data) {
+    /*
+    "display-button-label":              "true",
+    "allow-multiple-buttons-selected":   "true"
+    
+    console.log(data);
+    $(".gbcc-gallery img:hover").css("border", data.buttonHoverBorderColor);
+    $(".gbcc-gallery img:not(.selected)").css("border", data.buttonUnselectedBorderColor);
+    $(".gbcc-gallery img.selected").css("border", data.buttonSelectedBorderColor);        
+    $(".gbcc-gallery img.lastSelected").css("border", data.buttonLastSelectedBorderColor); 
+    */
+    allowMultipleButtonsSelected = data.allowMultipleButtonsSelected; 
+         
+  }
   
   function createCanvas(data) {
     var canvasImg = new Image();
     canvasImg.id = data.id;
     canvasImg.src = data.src;
     canvasImg.userId = data.userId;
-    canvasImg.onclick = function() { socket.emit("request user data", {userId: canvasImg.userId}) };
+    canvasImg.onclick = function() { 
+      socket.emit("request user data", {userId: canvasImg.userId}) 
+      if (allowMultipleButtonsSelected) {
+        if ($(this).hasClass("selected")) {
+          $(this).removeClass("selected");
+          $(this).removeClass("lastSelected");
+        } else {
+          $(this).addClass("selected");  
+          $(".lastSelected").removeClass("lastSelected");
+          $(this).addClass("lastSelected");        
+        }
+      } else {
+        $(".selected").removeClass(".selected");
+        $(this).addClass("selected");
+      }
+    };
     if ($(".gbcc-gallery").length === 0) { 
       $(".netlogo-gallery-tab-content").append("<div class='gbcc-gallery'></div>"); 
     }
@@ -94,7 +125,8 @@ Gallery = (function() {
   return {
     createCanvas: createCanvas,
     updateCanvas: updateCanvas,
-    broadcastToGallery: broadcastToGallery
+    broadcastToGallery: broadcastToGallery,
+    setupGallery: setupGallery
   };
 
 })();

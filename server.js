@@ -75,7 +75,7 @@ io.on('connection', function(socket){
       console.log(myUserId);
       if (activityType != "hubnet") { socket.emit("gbcc user enters", {userId: myUserId})}
 			// send settings to client
-			socket.emit("save settings", {userType: myUserType, userId: myUserId});
+			socket.emit("save settings", {userType: myUserType, userId: myUserId, gallerySettings: config.galleryJs});
 			// join myRoom
 			socket.join(myRoom+"-"+myUserType);
 			// tell teacher or student to display their interface

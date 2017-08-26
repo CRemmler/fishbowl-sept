@@ -26,7 +26,7 @@ jQuery(document).ready(function() {
   
   // add show/hide client view
   //$(".netlogo-view-container").append("<span class='teacherOnly hubnetOnly' style='float:right'><input id='shareClientView' checked type='checkbox'>Share</span>");
-  $(".netlogo-view-container").append("<span class='teacherOnly' style='float:right'><input id='shareGallery' checked type='checkbox'>Enable Gallery<input id='shareClientView' checked type='checkbox'>Share</span>");
+  //$(".netlogo-view-container").append("<span class='teacherOnly' style='float:right'><input id='shareGallery' checked type='checkbox'>Enable Gallery<input id='shareClientView' checked type='checkbox'>Enable view</span>");
   //$(".netlogo-view-container").append("<span class='studentOnly' style='float:right'><input id='myView' checked type='radio'>My View<input id='ourView' checked type='radio'>Our View</span>");
   
   $(".netlogo-view-container").css("width", $(".netlogo-view-container canvas").css("width"));
@@ -38,17 +38,20 @@ jQuery(document).ready(function() {
   $(".netlogo-powered-by").append("<span style='font-size: 16px;'> & <a href='http://remmler.org/gbcc'>GbCC</a></span>");
   
   // add export
+  $(".netlogo-export-wrapper").css("display","none");
+  /*
+  
   var exportWrapperString = "<div class='netlogo-export-wrapper'><span style='margin-right: 4px;'>"+
     "Export:</span><button class='netlogo-ugly-button' on-click='exportnlogo'>NetLogo</button>"+
     "<form action='exportGbccWorld' method='post' enctype='multipart/form-data' style='display: inline-block'>"+
     "<input type='text' name='roomname' class='roomNameInput' style='display:none'>"+
     "<button class='netlogo-ugly-button' type='submit'>World</button> </form></div>"; 
   $(".netlogo-export-wrapper").html(exportWrapperString);
-  
+  */
   // add gallery tab
-  var galleryTabString = "<div class='netlogo-gallery-tab'>"+
-  "<span class='netlogo-tab-text'>Gallery</span></div>"+
-  "<div class='netlogo-gallery-tab-content'></div>"
-  $(".netlogo-tab-area label:nth-child(2)").after(galleryTabString);
+  //var galleryTabString = "<div class='netlogo-gallery-tab'>"+
+  //"<span class='netlogo-tab-text'>Gallery</span></div>"+
+  //"<div class='netlogo-gallery-tab-content'></div>"
+  //$(".netlogo-tab-area label:nth-child(2)").after(galleryTabString);
   
 });
