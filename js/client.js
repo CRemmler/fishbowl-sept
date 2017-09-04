@@ -4,6 +4,8 @@ var commandQueue = [];
 var userData = {};
 var myData = {};
 var activityType;
+var repaintPatches = true;
+var foreverButtonCode = {};
 
 jQuery(document).ready(function() {
   var userId;
@@ -67,8 +69,9 @@ jQuery(document).ready(function() {
   // students display reporters
   socket.on("display reporter", function(data) {
     //console.log("display reporter "+data.hubnetMessageTag+" "+data.hubnetMessage);
-    if (data.hubnetMessageTag === "canvas") {
-      if ($("#image-"+data.hubnetMessageSource).length === 0) {
+    if (data.hubnetMessageTag.includes("canvas")) {
+      /*if ($("#image-"+data.hubnetMessageSource).length === 0) {
+        
         Gallery.createCanvas({ id : "image-" + data.hubnetMessageSource,
                 src : data.hubnetMessage,
                 userId : data.hubnetMessageSource
@@ -79,7 +82,8 @@ jQuery(document).ready(function() {
       } else {
         Gallery.updateCanvas({ id: "#image-"+data.hubnetMessageSource, 
                 src: data.hubnetMessage })
-      }
+      }*/
+      Gallery.displayCanvas({message:data.hubnetMessage,source:data.hubnetMessageSource,tag:data.hubnetMessageTag});
     } else {
       var matchingMonitors = session.widgetController.widgets().filter(function(x) { 
         return x.type === "monitor" && x.display === data.hubnetMessageTag; 
@@ -114,6 +118,22 @@ jQuery(document).ready(function() {
       }
     } else {
       session.run('gbcc-on-gallery-button-click "'+data.userId+'"');
+    }
+  });
+  
+  var myVar = "";
+  
+  function runForeverButtonCode() {
+    for (code in foreverButtonCode) { session.run(data.compiledCode); }
+  }
+  
+  socket.on("accept user forever data", function(data) {
+    if (data.status === "on") {
+      if (foreverButtonCode === {}) { myVar = setInterval(runForeverButtonCode, 1000); }
+      foreverButtonCode[data.userId] = data.compiledCode;
+    } else {
+      delete foreverButtonCode[data.userId];
+      if (foreverButtonCode === {}) { clearInterval(myVar); }
     }
   });
 

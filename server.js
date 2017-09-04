@@ -167,7 +167,7 @@ io.on('connection', function(socket){
 		var myUserId = socket.id;
 		var destination = data.hubnetMessageSource;
 		if (roomData[myRoom].userData[myUserId]) {
-			if (( data.hubnetMessageTag === "canvas") && (roomData[myRoom].userData[myUserId]["canvas"] === undefined)) {
+			if (( data.hubnetMessageTag.includes("canvas")) && (roomData[myRoom].userData[myUserId]["canvas"] === undefined)) {
 				roomData[myRoom].canvasOrder.push(myUserId);
 			}
 			if (destination === "server") {
@@ -212,6 +212,17 @@ io.on('connection', function(socket){
 			socket.emit("accept user data", {userId: data.userId, userData: roomData[myRoom].userData[data.userId]});
 		}
 	});
+  
+  // pass reporter from student to server
+  socket.on("request user forever data", function(data) {
+    var myRoom = socket.myRoom;
+    if (roomData[myRoom].userData != undefined) {
+      socket.emit("accept user forever data", {
+        compiledCode: roomData[myRoom].userData[data.userId]["gallery-forever-button-code"], 
+        status: data.status, 
+        userId: data.userId });
+    }
+  });
 
 	// pass reporter from student to server
 	socket.on("get reporter", function(data) {

@@ -23,12 +23,8 @@ jQuery(document).ready(function() {
         }
     }
   });
-  
-  // add show/hide client view
-  //$(".netlogo-view-container").append("<span class='teacherOnly hubnetOnly' style='float:right'><input id='shareClientView' checked type='checkbox'>Share</span>");
-  //$(".netlogo-view-container").append("<span class='teacherOnly' style='float:right'><input id='shareGallery' checked type='checkbox'>Enable Gallery<input id='shareClientView' checked type='checkbox'>Enable view</span>");
-  //$(".netlogo-view-container").append("<span class='studentOnly' style='float:right'><input id='myView' checked type='radio'>My View<input id='ourView' checked type='radio'>Our View</span>");
-  
+
+  // so teacher can toggle view on and off
   $(".netlogo-view-container").css("width", $(".netlogo-view-container canvas").css("width"));
   $("#shareClientView").click(function() {
     ($(this).prop("checked")) ? socket.emit('display view', {'display':true}) : socket.emit('display view', {'display':false});
@@ -39,19 +35,18 @@ jQuery(document).ready(function() {
   
   // add export
   $(".netlogo-export-wrapper").css("display","none");
+  
+  // add hidden div to hold image for import-drawing
+  $("body").append("<input type=\"file\" id=\"importDrawingFileElem\" name='importDrawingFile' accept='image/*' style='display:none' >");
+  $("#importDrawingFileElem").change(function(event) {
+    Interface.importImageFile();
+  });
+
+  // hidden canvases to hold drawings
   /*
+  $("body").append('<canvas id="miniCanvas" width="500" height="500" style="display:none"></canvas>');
+  $("body").append('<canvas id="miniSafariCanvas" width="200" height="200" style="display:none"></canvas>');
   
-  var exportWrapperString = "<div class='netlogo-export-wrapper'><span style='margin-right: 4px;'>"+
-    "Export:</span><button class='netlogo-ugly-button' on-click='exportnlogo'>NetLogo</button>"+
-    "<form action='exportGbccWorld' method='post' enctype='multipart/form-data' style='display: inline-block'>"+
-    "<input type='text' name='roomname' class='roomNameInput' style='display:none'>"+
-    "<button class='netlogo-ugly-button' type='submit'>World</button> </form></div>"; 
-  $(".netlogo-export-wrapper").html(exportWrapperString);
+  $("body").append('<div id="netlogo-model-container" style="display: inline-block; padding:0px"></div>');
   */
-  // add gallery tab
-  //var galleryTabString = "<div class='netlogo-gallery-tab'>"+
-  //"<span class='netlogo-tab-text'>Gallery</span></div>"+
-  //"<div class='netlogo-gallery-tab-content'></div>"
-  //$(".netlogo-tab-area label:nth-child(2)").after(galleryTabString);
-  
 });
