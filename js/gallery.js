@@ -75,11 +75,11 @@ Gallery = (function() {
     ($(thisSpan).hasClass("selected")) ? $(thisSpan).removeClass("selected") : $(thisSpan).addClass("selected");
     if (!$(thisSpan).parent().hasClass("selected")) { 
       $(thisSpan).parent().addClass("selected"); 
-      session.compileObserverCode("gbcc-on-gallery-forever-button-go", "gallery-forever-button-code");
+      session.compileObserverCode("gbcc-on-gallery-forever-go \""+userId+"\"", "gallery-forever-button-code-"+userId);
       socket.emit("request user forever data", {userId: userId, status: "on"})  
     } else {
       $(thisSpan).parent().removeClass("selected");
-      socket.emit("request user forever data", {userId: userId, status: "off"})        
+      socket.emit("request user forever data", {userId: userId, status: "off"})    
     }    
   }
 

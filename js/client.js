@@ -5,7 +5,7 @@ var userData = {};
 var myData = {};
 var activityType;
 var repaintPatches = true;
-var foreverButtonCode = {};
+var foreverButtonCode = new Object();
 
 jQuery(document).ready(function() {
   var userId;
@@ -124,16 +124,20 @@ jQuery(document).ready(function() {
   var myVar = "";
   
   function runForeverButtonCode() {
-    for (code in foreverButtonCode) { session.run(data.compiledCode); }
+    for (userId in foreverButtonCode) { 
+      session.runObserverCode(foreverButtonCode[userId]); 
+    }
   }
   
   socket.on("accept user forever data", function(data) {
     if (data.status === "on") {
-      if (foreverButtonCode === {}) { myVar = setInterval(runForeverButtonCode, 1000); }
-      foreverButtonCode[data.userId] = data.compiledCode;
+      if ($.isEmptyObject(foreverButtonCode)) { 
+        myVar = setInterval(runForeverButtonCode, 1000); 
+      }
+      foreverButtonCode[data.userId] = data.key;
     } else {
       delete foreverButtonCode[data.userId];
-      if (foreverButtonCode === {}) { clearInterval(myVar); }
+      if ($.isEmptyObject(foreverButtonCode)) { clearInterval(myVar); }
     }
   });
 

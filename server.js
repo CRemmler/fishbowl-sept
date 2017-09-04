@@ -218,7 +218,7 @@ io.on('connection', function(socket){
     var myRoom = socket.myRoom;
     if (roomData[myRoom].userData != undefined) {
       socket.emit("accept user forever data", {
-        compiledCode: roomData[myRoom].userData[data.userId]["gallery-forever-button-code"], 
+        key: "gallery-forever-button-code-"+data.userId,
         status: data.status, 
         userId: data.userId });
     }
