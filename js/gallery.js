@@ -48,10 +48,14 @@ Gallery = (function() {
   }
   
   function cardClickHandler(thisElt) {
+    var userId = $(thisElt).parent().attr("id").replace("gallery-item-","");
     if (allowMultipleButtonsSelected) {
       if ($(thisElt).parent().hasClass("selected")) {
         $(thisElt).parent().removeClass("selected");
-        $(thisElt).parent().find(".forever-icon").removeClass("selected");
+        if ($(thisElt).parent().find(".forever-icon").hasClass("selected")) {
+          $(thisElt).parent().find(".forever-icon").removeClass("selected");
+          socket.emit("request user forever data", {userId: userId, status: "off"});  
+        }
       } else { $(thisElt).parent().addClass("selected"); }
     } else {
       if ($(thisElt).parent().hasClass("selected")) { $(thisElt).parent().removeClass("selected");
@@ -72,15 +76,16 @@ Gallery = (function() {
   }
   
   function foreverClickHandler(thisSpan, userId) {
-    ($(thisSpan).hasClass("selected")) ? $(thisSpan).removeClass("selected") : $(thisSpan).addClass("selected");
-    if (!$(thisSpan).parent().hasClass("selected")) { 
+    if ($(thisSpan).hasClass("selected")) {  
+      $(thisSpan).removeClass("selected");
+      $(thisSpan).parent().removeClass("selected");
+      socket.emit("request user forever data", {userId: userId, status: "off"});  
+    } else {
+      $(thisSpan).addClass("selected");
       $(thisSpan).parent().addClass("selected"); 
       session.compileObserverCode("gbcc-on-gallery-forever-go \""+userId+"\"", "gallery-forever-button-code-"+userId);
       socket.emit("request user forever data", {userId: userId, status: "on"})  
-    } else {
-      $(thisSpan).parent().removeClass("selected");
-      socket.emit("request user forever data", {userId: userId, status: "off"})    
-    }    
+    }      
   }
 
   function rotateCards(direction, cards) {
