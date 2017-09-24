@@ -1,22 +1,21 @@
 {
   "interfaceJs": {
     "loginComponents": {
-      "componentRange": [11,11]
+      "componentRange": [10,10]
     },
     "studentComponents": {
-      "componentRange": [0,10]
+      "componentRange": [0,9]
     },
     "teacherComponents": {
-      "componentRange": [0,10]
+      "componentRange": [0,9]
     }
   },
   "galleryJs": {
-    "buttonHoverBorderColor":         "5px solid blue" , 
-    "buttonUnselectedBorderColor":    "5px solid pink",
-    "buttonSelectedBorderColor":      "5px solid yellow",
-    "buttonLastSelectedBorderColor":  "5px solid pink",
-    "displayButtonLabel":              "true",
-    "allowMultipleButtonsSelected":   "true"
+    "allowTabs": true,
+    "allowMultipleLayers": true,
+    "allowMultipleSelections": true,
+    "allowCanvasForeverButtons": true,
+    "allowGalleryForeverButton": true
   }
 }
 
