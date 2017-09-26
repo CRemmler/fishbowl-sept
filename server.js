@@ -6,7 +6,7 @@ var config = require('./config.json');
 var exportworld = require('./export/exportworld.js');
 var formidable = require('formidable');
 var fs = require("node-fs");
-const PORT = process.env.PORT || 3000;
+const PORT = 3002; //process.env.PORT || 3000;
 var myTimer;
 var roomData = {};
  
@@ -236,28 +236,13 @@ io.on('connection', function(socket){
 	 });
 	});
 
-	// pass reporter from student to server
-	socket.on("request user data", function(data) {
-    console.log("request user data");
-		var myRoom = socket.myRoom;
-		if (roomData[myRoom].userData != undefined) {
-			socket.emit("accept user data", {
-        userId: data.userId, 
-        userData: roomData[myRoom].userData[data.userId],
-        status: data.status
-      });
-		}
-	});
-  
-  // pass reporter from student to server
-  socket.on("request user forever data", function(data) {
-    console.log("request user forever data "+data.status);
+  // select, deselect, forever-select, forever-deselect
+  socket.on("request user data", function(data) {
     var myRoom = socket.myRoom;
     if (roomData[myRoom].userData != undefined) {
-      socket.emit("accept user forever data", {
-        key: "gbcc-forever-button-code-"+data.userId,
-        status: data.status, 
-        userId: data.userId });
+      var userData = roomData[myRoom].userData[data.userId];
+      var key = (data.status === "forever-select") ? "gbcc-forever-button-code-"+data.userId : undefined;
+      socket.emit("accept user data", {userId: data.userId, status: data.status, userData: userData, key: key});
     }
   });
 

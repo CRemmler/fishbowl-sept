@@ -42,16 +42,14 @@ jQuery(document).ready(function() {
   });
 
   socket.on("gbcc user enters", function(data) {
-    console.log("gbcc user enters");
-    console.log("gbcc user enters",data);
     if (procedures.gbccOnUserEnters) {
-      session.run('gbcc-on-user-enters "'+data.userId+'"');
+      session.run('gbcc-on-enter "'+data.userId+'"');
     }
   });
   
   socket.on("gbcc user exits", function(data) {
     if (procedures.gbccOnUserExits) {
-      session.run('gbcc-on-user-exits ["'+data.userId+'"]');
+      session.run('gbcc-on-exit ["'+data.userId+'"]');
     }
   });
 
@@ -73,7 +71,6 @@ jQuery(document).ready(function() {
 
   // students display reporters
   socket.on("display reporter", function(data) {
-    console.log("display reporter");
     if (data.hubnetMessageTag.includes("canvas")) {
       Gallery.displayCanvas({message:data.hubnetMessage,source:data.hubnetMessageSource,tag:data.hubnetMessageTag});
     } else {
@@ -94,46 +91,38 @@ jQuery(document).ready(function() {
       }
     }
   });
-
-  // This function is called after the user clicks on a canvas in the gallery.
-  // The data from that user is downloaded before the gallery click handler is initiated
-  // WARNING: This means you should not call the gallery click handler from within NetLogo
-  // AND You should not call gbcc-get-from-user from outside of the click handler
+  
   socket.on("accept user data", function(data) {
-    console.log("accept user data "+data.status);
-    userData = data.userData;
-    //if (allowMultipleButtonsSelected) {
-    if (data.status === "on") {
+    userData[data.userId] = data.userData;
+    console.log("accept user data ",userData);
+    if (data.status === "select") {
       if (procedures.gbccOnCanvasSelect) {
-        session.run('gbcc-on-canvas-select "'+data.userId+'"');        
+        session.run('gbcc-on-select "'+data.userId+'"');        
       }
-    } else {
+    } else if (data.status === "deselect") {
       if (procedures.gbccOnCanvasDeselect) {
-        session.run('gbcc-on-canvas-deselect "'+data.userId+'"');        
+        session.run('gbcc-on-deselect "'+data.userId+'"');        
       }
-    }
-  });
-  
-  var myVar = "";
-  function runForeverButtonCode() {
-    for (userId in foreverButtonCode) { 
-      console.log(foreverButtonCode[userId]);
-      session.runObserverCode(foreverButtonCode[userId]); 
-    }
-  }
-  
-  socket.on("accept user forever data", function(data) {
-    console.log("accept user forever data "+data.status);
-    if (data.status === "on") {
+    } else if (data.status === "forever-deselect") {
+      delete foreverButtonCode[data.userId];
+      if ($.isEmptyObject(foreverButtonCode)) { clearInterval(myVar); }
+    } else if (data.status === "forever-select") {
       if ($.isEmptyObject(foreverButtonCode)) { 
         myVar = setInterval(runForeverButtonCode, 1000); 
       }
       foreverButtonCode[data.userId] = data.key;
-    } else {
-      delete foreverButtonCode[data.userId];
-      if ($.isEmptyObject(foreverButtonCode)) { clearInterval(myVar); }
+    } else if (data.status === "go") {
+      session.runObserverCode(foreverButtonCode[userId]); 
     }
   });
+
+  var myVar = "";
+  function runForeverButtonCode() {
+    console.log("run forever button code");
+    for (userId in foreverButtonCode) { 
+      socket.emit("request user forever data go", {userId: userId});
+    }
+  }
 
   socket.on("execute command", function(data) {
     var commandObject = {};

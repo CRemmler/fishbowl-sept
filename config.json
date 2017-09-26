@@ -14,7 +14,7 @@
     "allowTabs": true,
     "allowMultipleLayers": true,
     "allowMultipleSelections": true,
-    "allowCanvasForeverButtons": false,
+    "allowCanvasForeverButtons": true,
     "allowGalleryForeverButton": true
   }
 }
